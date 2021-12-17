@@ -28,7 +28,7 @@ logger = logging.getLogger("werkzeug")
 
 app = Flask("CloudSchool-App")
 
-app.config.from_pyfile("./config/app.conf", silent=False)
+app.config.from_pyfile("./app.conf", silent=False)
 
 RAPID_API_KEY = app.config.get("RAPID_API_KEY")
 END_POINT = app.config.get("END_POINT")
