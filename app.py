@@ -38,6 +38,7 @@ SCHEMA_NAME = app.config.get("SCHEMA_NAME")
 VAULT_ENDPOINT = app.config.get("VAULT_ENDPOINT")
 VAULT_TOKEN = app.config.get("VAULT_TOKEN")
 VAULT_PATH_TO_CREDS = app.config.get("VAULT_PATH_TO_CREDS")
+APPLICATION_VERSION = app.config.get("APPLICATION_VERSION")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' #'sqlite:///data.db'
 #app.config['SQLALCHEMY_BINDS'] = {SCHEMA_NAME: SQL_CONNECTION_STRING + SCHEMA_NAME}
@@ -92,7 +93,7 @@ if __name__ == '__main__':
         instanceid = urllib.request.urlopen('http://169.254.169.254/latest/meta-data/instance-id').read().decode()
     except:
         pass
-    handler = watchtower.CloudWatchLogHandler(stream_name= f"werkzeug-{instanceid}", log_group_name=app.name, boto3_client=boto3_logs_client)
+    handler = watchtower.CloudWatchLogHandler(stream_name= f"AppVersion-{APPLICATION_VERSION}-werkzeug-{instanceid}", log_group_name=app.name, boto3_client=boto3_logs_client)
     app.logger.addHandler(handler)
     logging.getLogger("werkzeug").addHandler(handler)
     db.init_app(app)
