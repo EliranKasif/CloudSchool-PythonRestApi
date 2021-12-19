@@ -82,20 +82,20 @@ def _get_db_connector():
     return connection
 
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"creator" : _get_db_connector}
+logging.basicConfig(
+    level=log_level[LOG_LEVEL],
+    format='%(asctime)s - %(levelname)8s - %(name)9s - %(funcName)15s - %(message)s'
+)
+instanceid = "local"
+try:
+    instanceid = urllib.request.urlopen('http://169.254.169.254/latest/meta-data/instance-id').read().decode()
+except:
+    pass
+handler = watchtower.CloudWatchLogHandler(stream_name=f"AppVersion-{APPLICATION_VERSION}-werkzeug-{instanceid}",                                          log_group_name=app.name, boto3_client=boto3_logs_client)
+app.logger.addHandler(handler)
+logging.getLogger("werkzeug").addHandler(handler)
+db.init_app(app)
+logger.info('Starting Flask server on {} listening on port {}'.format('0.0.0.0', '5000'))
 
 if __name__ == '__main__':
-    logging.basicConfig(
-        level=log_level[LOG_LEVEL],
-        format='%(asctime)s - %(levelname)8s - %(name)9s - %(funcName)15s - %(message)s'
-    )
-    instanceid = "local"
-    try:
-        instanceid = urllib.request.urlopen('http://169.254.169.254/latest/meta-data/instance-id').read().decode()
-    except:
-        pass
-    handler = watchtower.CloudWatchLogHandler(stream_name= f"AppVersion-{APPLICATION_VERSION}-werkzeug-{instanceid}", log_group_name=app.name, boto3_client=boto3_logs_client)
-    app.logger.addHandler(handler)
-    logging.getLogger("werkzeug").addHandler(handler)
-    db.init_app(app)
-    logger.info('Starting Flask server on {} listening on port {}'.format('0.0.0.0', '5000'))
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run()
