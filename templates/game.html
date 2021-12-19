@@ -14,6 +14,7 @@
         <center>
             <h1>Eliran Kasif - DevOps application</h1>
             <h1>Number of games: {{games|length}}</h1>
+            <h1> Application version: {{application_version}}</h1>
         </center>
         {% for game in games %}
             <div id="game" style="background-image: url({{game.thumbnail}});" onclick="window.open('{{game.game_url}}', '_blank');">
