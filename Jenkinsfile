@@ -21,13 +21,13 @@ pipeline {
     stage('updatesConsulKey')
     {
       steps {
-          def contents = env.GIT_COMMIT
+          contents = env.GIT_COMMIT
 
         echo "updates consul key with new version"
         sh "curl \
     --request PUT \
     --data @${contents} \
-    http://main.services:8500/v1/kv/app/version"
+    http://main.services:8500/v1/kv/app/version/APPLICATION_VERSION"
       }
     }
   }
