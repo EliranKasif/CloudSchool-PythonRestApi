@@ -21,7 +21,7 @@ pipeline {
     stage('updatesConsulKey')
     {
       steps {
-          contents = env.GIT_COMMIT
+        contents = env.GIT_COMMIT
 
         echo "updates consul key with new version"
         sh "curl \
