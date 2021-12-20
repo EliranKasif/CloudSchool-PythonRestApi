@@ -91,7 +91,7 @@ try:
     instanceid = urllib.request.urlopen('http://169.254.169.254/latest/meta-data/instance-id').read().decode()
 except:
     pass
-handler = watchtower.CloudWatchLogHandler(stream_name=f"AppVersion-{APPLICATION_VERSION}-werkzeug-{instanceid}",                                          log_group_name=app.name, boto3_client=boto3_logs_client)
+handler = watchtower.CloudWatchLogHandler(stream_name=f"AppVersion-{APPLICATION_VERSION}-werkzeug-{instanceid}", log_group_name=app.name, boto3_client=boto3_logs_client)
 app.logger.addHandler(handler)
 logging.getLogger("werkzeug").addHandler(handler)
 db.init_app(app)
